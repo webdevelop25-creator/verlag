@@ -1,26 +1,33 @@
 <?php
 
-class Book
+class Book implements EnityInterface
 {
 
-    private int $id;
+    private ?int $id;
     private string $isbn;
-    private Date $publicationDate;
+    private DateTime $publicationDate;
     private int $pages;
-    private string $titel;
+    private string $title;
     private float $price;
     private string $category;
     private bool $hardcover;
+    private Author $author;
 
-    public function __construct(string $isbn, Date $publicationDate, int $pages, string $titel, float $price, string $category, bool $hardcover)
+    public function __construct(string $isbn, string $publicationDate, int $pages, string $title, float $price, string $category, bool $hardcover, int $author_id, ?int $id = null)
     {
         $this->isbn = $isbn;
-        $this->publicationDate = $publicationDate;
+        $this->id = $id;
+        $this->publicationDate = new DateTime($publicationDate);
         $this->pages = $pages;
-        $this->titel = $titel;
+        $this->title = $title;
         $this->price = $price;
         $this->category = $category;
-        $this->handcover = $hardcover;
+        $this->hardcover = $hardcover;
+        $repo = new AuthorRepository();
+        $this->author = $repo->findById($author_id);
+
+
+
     }
 
     public function getIsbn(): string
@@ -33,12 +40,12 @@ class Book
         $this->isbn = $isbn;
     }
 
-    public function getPublicationDate(): Date
+    public function getPublicationDate(): DateTime
     {
         return $this->publicationDate;
     }
 
-    public function setPublicationDate(Date $publicationDate): void
+    public function setPublicationDate(DateTime $publicationDate): void
     {
         $this->publicationDate = $publicationDate;
     }
@@ -53,14 +60,14 @@ class Book
         $this->pages = $pages;
     }
 
-    public function getTitel(): string
+    public function getTitle(): string
     {
-        return $this->titel;
+        return $this->title;
     }
 
-    public function setTitel(string $titel): void
+    public function setTitle(string $title): void
     {
-        $this->titel = $titel;
+        $this->title = $title;
     }
 
     public function getPrice(): float
@@ -92,6 +99,22 @@ class Book
     {
         $this->hardcover = $hardcover;
     }
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getAuthor(): Author
+    {
+        return $this->author;
+    }
+
+
+    public function setAuthor(Author $author): void
+    {
+        $this->author = $author;
+    }
+
 }
 
 

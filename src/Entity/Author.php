@@ -1,6 +1,8 @@
 <?php
 
-class Author
+
+
+class Author implements \Entity\EnityInterface
 {
 
     private ?int $id;
@@ -8,6 +10,8 @@ class Author
     private string $lname;
     private DateTime $bday;
     private string $country;
+
+    private array $book;
 
 
     public function __construct(string $bday, string $country, string $fname, string $lname, ?int $id = null)
@@ -17,6 +21,8 @@ class Author
         $this->fname = $fname;
         $this->id = $id;
         $this->lname = $lname;
+        $bookrepo = new BookRepository();
+        $this->books = $bookrepo->findByAuthor($this);
     }
 
     public function getBday(): DateTime
@@ -71,7 +77,15 @@ class Author
     {
         $this->lname = $lname;
     }
+ public function getBooks(): array
+ {
+     return $this->books;
+ }
 
+ public function setBooks(array $books): void
+ {
+     $this->books = $books;
+ }
 }
 
 
